@@ -8,3 +8,53 @@ datasource db {
   provider = "cockroachdb"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  CUSTOMER
+  EMPLOYEE
+  MANAGER
+  ADMIN
+}
+
+// user of the portal
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now()) //optional
+  updatedAt DateTime @updatedAt // optional
+  //reviews   Review[] // one to many relationship with review
+  orders    Order[] // one to many relationship with order
+}
+
+// each item on the menu
+model MenuItem {
+  id          String  @id @default(uuid())
+  name        String // example: sally's special hot dog // big tex's quarterpounder
+  category    String // example" hot dog // burger
+  image       String // url to photo
+  isKeto      Boolean
+  isVegan     Boolean
+  description String? // optional
+  price       Float
+  orders      Order[] // one to many relationship with order
+}
+
+// enum on status
+enum Status {
+  CART
+  COMPLETE
+}
+
+// the order at checkout
+model Order {
+  id         String     @id @default(uuid())
+  createdAt  DateTime   @default(now())
+  totalPrice Float
+  status     String // "cart aka open order" or "complete"
+  user       User       @relation(fields: [userId], references: [id])
+  userId     String
+  menuItems  MenuItem[] // many to many with menu item
+}
