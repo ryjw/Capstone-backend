@@ -24,7 +24,6 @@ model User {
   role      Role
   createdAt DateTime @default(now()) //optional
   updatedAt DateTime @updatedAt // optional
-  //reviews   Review[] // one to many relationship with review
   orders    Order[] // one to many relationship with order
 }
 

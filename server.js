@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
+import { userRouter } from './routes/userRouter.js';
 
 dotenv.config();
 const app = express();
@@ -37,6 +38,7 @@ app.use(async (req, res, next) => {
     }
 });
 
+app.use("/users", userRouter);
 
 app.get("/", (req, res) => {
     res.send({
