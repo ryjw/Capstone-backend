@@ -8,7 +8,6 @@ CREATE TYPE "Status" AS ENUM ('CART', 'COMPLETE');
 CREATE TABLE "User" (
     "id" STRING NOT NULL,
     "username" STRING NOT NULL,
-    "email" STRING NOT NULL,
     "password" STRING NOT NULL,
     "role" "Role" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -35,8 +34,8 @@ CREATE TABLE "MenuItem" (
 CREATE TABLE "Order" (
     "id" STRING NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "totalPrice" FLOAT8 NOT NULL,
-    "status" STRING NOT NULL,
+    "totalPrice" FLOAT8 NOT NULL DEFAULT 0,
+    "status" STRING NOT NULL DEFAULT 'cart',
     "userId" STRING NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
@@ -50,9 +49,6 @@ CREATE TABLE "_MenuItemToOrder" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_MenuItemToOrder_AB_unique" ON "_MenuItemToOrder"("A", "B");
