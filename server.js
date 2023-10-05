@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import { userRouter } from './routes/userRouter.js';
+import { orderRouter } from './routes/order.Router.js';
+import { menuRouter } from './routes/menuRouter.js';
 
 dotenv.config();
 const app = express();
@@ -39,6 +41,8 @@ app.use(async (req, res, next) => {
 });
 
 app.use("/users", userRouter);
+app.use("/orders", orderRouter);
+app.use("/menu", menuRouter);
 
 app.get("/", (req, res) => {
     res.send({
