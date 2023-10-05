@@ -22,17 +22,17 @@ model User {
   username  String   @unique
   password  String
   role      Role
-  createdAt DateTime @default(now()) //optional
-  updatedAt DateTime @updatedAt // optional
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   orders    Order[] // one to many relationship with order
 }
 
 // each item on the menu
 model MenuItem {
   id          String  @id @default(uuid())
-  name        String // example: sally's special hot dog // big tex's quarterpounder
-  category    String // example" hot dog // burger
-  image       String // url to photo
+  name        String
+  category    String
+  image       String
   isKeto      Boolean
   isVegan     Boolean
   description String? // optional
@@ -50,8 +50,8 @@ enum Status {
 model Order {
   id         String     @id @default(uuid())
   createdAt  DateTime   @default(now())
-  totalPrice Float
-  status     String // "cart aka open order" or "complete"
+  totalPrice Float      @default(0)
+  status     String     @default("cart")
   user       User       @relation(fields: [userId], references: [id])
   userId     String
   menuItems  MenuItem[] // many to many with menu item
