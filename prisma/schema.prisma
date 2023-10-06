@@ -18,13 +18,14 @@ enum Role {
 
 // user of the portal
 model User {
-  id        String   @id @default(uuid())
-  username  String   @unique
+  id        String      @id @default(uuid())
+  username  String      @unique
   password  String
   role      Role
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   orders    Order[] // one to many relationship with order
+  orderItem OrderItem[]
 }
 
 // each item on the menu
@@ -37,16 +38,18 @@ model MenuItem {
   isVegan     Boolean
   description String? // optional
   price       Float
-  orderItems   OrderItem[]
+  orderItem   OrderItem[]
 }
 
 model OrderItem {
   id         String   @id @default(uuid())
-  quantity   Int
+  quantity   Int      @default(1)
   order      Order    @relation(fields: [orderId], references: [id])
   orderId    String
   menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
   menuItemId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
 }
 
 model Order {

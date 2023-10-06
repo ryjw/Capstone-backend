@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "MenuItem" ALTER COLUMN "isKeto" DROP NOT NULL;
-ALTER TABLE "MenuItem" ALTER COLUMN "isVegan" DROP NOT NULL;
