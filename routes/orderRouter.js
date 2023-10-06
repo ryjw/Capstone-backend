@@ -53,6 +53,8 @@ orderRouter.get("/:userId", async (req, res) => {
     if (!orders) {
       return res.send({ success: false, error: "no orders yet" });
     }
+    //filter out any open orders so the frontend can easily display past orders only
+    orders = orders.filter((order) => order.status === "COMPLETE");
     // return orders
     res.send({ success: true, orders });
   } catch (error) {
@@ -87,6 +89,7 @@ orderRouter.post("/", async (req, res) => {
 orderRouter.post("/items", async (req, res) => {
   try {
     const { orderId, menuItemId, quantity } = req.body;
+    const userId = req.user.id;
     // make sure both order and item are included
     if (!menuItemId) {
       return res.send({
@@ -98,6 +101,22 @@ orderRouter.post("/items", async (req, res) => {
       return res.send({
         success: false,
         error: "You need an order to add this item to",
+      });
+    }
+    // make sure user Id is included and is valid
+    if (!userId) {
+      return res.send({
+        success: false,
+        error: "please log in to add an item",
+      });
+    }
+    const isUserExisting = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if (!isUserExisting) {
+      return res.send({
+        success: false,
+        error: "invalid token, please log in again",
       });
     }
     // check whether the order exists and whether the item exists
@@ -119,6 +138,7 @@ orderRouter.post("/items", async (req, res) => {
         orderId,
         menuItemId,
         quantity,
+        userId,
       },
     });
     res.send({ success: true, orderItem });
