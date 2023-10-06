@@ -113,7 +113,39 @@ userRouter.get("/token", async (req, res) => {
     if (!req.user) {
       return res.send({ success: false, error: "You must first be logged in" });
     }
-    res.send({ success: true, user: req.user });
+    const user = { id: req.user.id, username: req.user.username };
+    res.send({ success: true, user });
+  } catch (error) {
+    res.send({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+// admins may delete users
+
+userRouter.delete("/:userId", async (req, res) => {
+  try {
+    // check for admin status
+    if (!req.user || req.user.role !== "ADMIN") {
+      return res.send({
+        success: false,
+        error: "you must be logged in as admin to delete a user",
+      });
+    }
+    const { userId } = req.params;
+    // see if user exists
+    const isExisting = await prisma.user.findUnique({ where: { id: userId } });
+    if (!isExisting) {
+      return res.send({
+        success: false,
+        error: "user does not exist or id you supplied is wrong",
+      });
+    }
+    // delete the user
+    const user = await prisma.user.delete({ where: { id: userId } });
+    res.send({ success: true, user });
   } catch (error) {
     res.send({
       success: false,
