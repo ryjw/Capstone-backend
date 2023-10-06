@@ -1,6 +1,5 @@
 import express from "express";
 import { prisma } from "../server.js";
-import jwt from "jsonwebtoken";
 
 export const orderRouter = express.Router();
 
@@ -65,7 +64,7 @@ orderRouter.get("/:userId", async (req, res) => {
 });
 
 // route for creating an order
-orderRouter.post("/orders", async (req, res) => {
+orderRouter.post("/", async (req, res) => {
   try {
     // if they aren't logged in, reject the order
     if (!req.user) {
@@ -85,7 +84,7 @@ orderRouter.post("/orders", async (req, res) => {
 });
 
 // route for adding an item to the cart
-orderRouter.post("/orders/items", async (req, res) => {
+orderRouter.post("/items", async (req, res) => {
   try {
     const { orderId, menuItemId, quantity } = req.body;
     // make sure both order and item are included
@@ -132,7 +131,7 @@ orderRouter.post("/orders/items", async (req, res) => {
 });
 
 // route for modifying the quantity of an item
-orderRouter.put("orders/items/:orderItemId", async (req, res) => {
+orderRouter.put("/items/:orderItemId", async (req, res) => {
   try {
     // the id of OrderItem that we are accessing
     const { orderItemId } = req.params;
@@ -185,7 +184,7 @@ orderRouter.put("orders/items/:orderItemId", async (req, res) => {
 });
 
 // remove an item from the cart
-orderRouter.delete("/orders/items/:orderItemId", async (req, res) => {
+orderRouter.delete("/items/:orderItemId", async (req, res) => {
   try {
     const { orderItemId } = req.params;
     if (!orderItemId) {
@@ -225,7 +224,7 @@ orderRouter.delete("/orders/items/:orderItemId", async (req, res) => {
 });
 
 // route for closing an order
-orderRouter.put("/orders/:orderId", async (req, res) => {
+orderRouter.put("/:orderId", async (req, res) => {
   try {
     const { orderId } = req.params;
     const { status, totalPrice } = req.body;
