@@ -67,14 +67,3 @@ enum Status {
   CART
   COMPLETE
 }
-
-// the order at checkout
-// model Order {
-//   id         String     @id @default(uuid())
-//   createdAt  DateTime   @default(now())
-//   totalPrice Float      @default(0)
-//   status     String     @default("cart")
-//   user       User       @relation(fields: [userId], references: [id])
-//   userId     String
-//   menuItems  MenuItem[]// many to many with menu item
-// }

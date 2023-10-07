@@ -21,7 +21,7 @@ userRouter.post(`/register`, async (req, res) => {
       return res.send({
         success: false,
         error:
-          "You must provide a username , role and password when logging in.",
+          "You must provide a username , role and password when registering an account.",
       });
     }
     const checkUser = await prisma.user.findUnique({
@@ -113,7 +113,11 @@ userRouter.get("/token", async (req, res) => {
     if (!req.user) {
       return res.send({ success: false, error: "You must first be logged in" });
     }
-    const user = { id: req.user.id, username: req.user.username };
+    const user = {
+      id: req.user.id,
+      username: req.user.username,
+      role: req.user.role,
+    };
     res.send({ success: true, user });
   } catch (error) {
     res.send({
@@ -145,6 +149,9 @@ userRouter.delete("/:userId", async (req, res) => {
     }
     // delete the user
     const user = await prisma.user.delete({ where: { id: userId } });
+    // remove "password","updatedAt" keys from user
+    delete user.password;
+    delete user.updatedAt;
     res.send({ success: true, user });
   } catch (error) {
     res.send({

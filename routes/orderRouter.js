@@ -54,9 +54,11 @@ orderRouter.get("/:userId", async (req, res) => {
       return res.send({ success: false, error: "no orders yet" });
     }
     //filter out any open orders so the frontend can easily display past orders only
-    orders = orders.filter((order) => order.status === "COMPLETE");
+    const completeOrders = orders.filter(
+      (order) => order.status === "COMPLETE"
+    );
     // return orders
-    res.send({ success: true, orders });
+    res.send({ success: true, orders: completeOrders });
   } catch (error) {
     res.send({
       success: false,
@@ -282,7 +284,7 @@ orderRouter.put("/:orderId", async (req, res) => {
     // all being well, close the order
     const order = await prisma.order.update({
       where: { id: orderId },
-      body: {
+      data: {
         totalPrice,
         status,
       },
