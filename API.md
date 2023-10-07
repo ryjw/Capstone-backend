@@ -532,7 +532,7 @@ fetch(`${API}/menu`, {
  }
 ```
 
-## PUT '/menu/:menuItemId
+## PUT /menu/:menuItemId
 
 ### Request:
 
