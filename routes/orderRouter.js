@@ -9,7 +9,7 @@ orderRouter.get("/", async (req, res) => {
     const orders = await prisma.order.findMany({
       include: {
         user: { select: { username: true, id: true } },
-        menuItems: true,
+        orderItems: true,
       },
     });
     res.send({
