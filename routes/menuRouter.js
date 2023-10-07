@@ -3,9 +3,12 @@ import { prisma } from "../server.js";
 
 export const menuRouter = express.Router();
 
-menuRouter.get("/", (req, res) => {
+menuRouter.get("/", async (req, res) => {
   try {
-    const menuItems = prisma.menuItem.findMany();
+    const menuItems = await prisma.menuItem.findMany();
+    if (!menuItems) {
+      return res.send({ success: false, error: "Menu items not found." });
+    }
     res.send({
       success: true,
       menuItems,
@@ -18,13 +21,14 @@ menuRouter.get("/", (req, res) => {
   }
 });
 
-menuRouter.get("/menuItem/:menuItemId", (req, res) => {
+menuRouter.get("/:menuItemId", async (req, res) => {
   try {
     const { menuItemId } = req.params;
-    // check whether the item exists, and if it does, return it
-    const menuItem = prisma.menuItem.findUnique({ where: { id: menuItemId } });
+    const menuItem = await prisma.menuItem.findUnique({
+      where: { id: menuItemId },
+    });
     if (!menuItem) {
-      return res.send({ success: false, error: "item not found with this id" });
+      return res.send({ success: false, error: "menu item cannot be found" });
     }
     res.send({
       success: true,
@@ -38,9 +42,9 @@ menuRouter.get("/menuItem/:menuItemId", (req, res) => {
   }
 });
 
-menuRouter.post("/menuItem", async (req, res) => {
+menuRouter.post("/", async (req, res) => {
   try {
-    const { name, category, description, price, isKeto, image, isVegan } =
+    const { name, category, image, isKeto, isVegan, description, price } =
       req.body;
     // only an admin may create a menu item
     if (!req.user || req.user.role !== "ADMIN") {
