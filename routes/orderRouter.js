@@ -53,10 +53,6 @@ orderRouter.get("/:userId", async (req, res) => {
     if (!orders) {
       return res.send({ success: false, error: "no orders yet" });
     }
-    //filter out any open orders so the frontend can easily display past orders only
-    const completeOrders = orders.filter(
-      (order) => order.status === "COMPLETE"
-    );
     // return orders
     res.send({ success: true, orders: completeOrders });
   } catch (error) {
