@@ -230,13 +230,21 @@ fetch(`${API}/orders/aed5073f-b74a-4fad-812a-88bc35f45ad4`, {
   "success": true,
   "orders": [
     {
-      "id": "df9f970e-a428-45ec-a2b9-fe7b30080cff",
-      "createdAt": "2023-10-07T03:00:44.315Z",
-      "totalPrice": 7.25,
-      "status": "COMPLETE",
-      "userId": "aed5073f-b74a-4fad-812a-88bc35f45ad4"
-    }
-  ]
+      "id": "ce0d3e7f-1d19-4121-b4bf-7cebb436371a",
+      "createdAt": "2023-10-07T02:50:45.918Z",
+      "totalPrice": 0,
+      "status": "CART",
+      "userId": "86c90630-4980-40aa-9b47-59da7f688c2d",
+      "orderItems": [
+        {
+          "id": "f8559474-54ef-4ec8-a43f-923bc649db96",
+          "quantity": 1,
+          "orderId": "ce0d3e7f-1d19-4121-b4bf-7cebb436371a",
+          "menuItemId": "77efa6c6-0b96-46ac-83b6-99fe8741a6d1",
+          "userId": "86c90630-4980-40aa-9b47-59da7f688c2d"
+        }
+      ]
+    } ]
 }
 ```
 

@@ -48,13 +48,14 @@ orderRouter.get("/:userId", async (req, res) => {
     // find orders
     const orders = await prisma.order.findMany({
       where: { userId },
+      include: { orderItems: true },
     });
     // handle no orders
     if (!orders) {
       return res.send({ success: false, error: "no orders yet" });
     }
     // return orders
-    res.send({ success: true, orders: completeOrders });
+    res.send({ success: true, orders });
   } catch (error) {
     res.send({
       success: false,
