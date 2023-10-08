@@ -75,7 +75,7 @@ fetch(`${API}/users/register`, {
 ### Request:
 
 ```js
-fetch(`${API}/login`, {
+fetch(`${API}/users/login`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
