@@ -341,8 +341,6 @@ fetch(`${API}/orders/items/aecd57be-0765-4a03-bf8d-15db7ed80a25`, {
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NmM5MDYzMC00OTgwLTQwYWEtOWI0Ny01OWRhN2Y2ODhjMmQiLCJpYXQiOjE2OTY2NTM0MzcsImV4cCI6MTY5NjY1NzAzN30.ZddnHI_2dM6sfPk9tQQ6FWFBlnnk4qBdDI-pZYh-CJ4",
   },
   body: JSON.stringify({
-    orderId: "e822cf0f-679a-4569-8feb-2f5ab550733a",
-    menuItemId: "3b11d233-fe14-4678-b000-7c2d51dba71a",
     quantity: 17,
   }),
 });
