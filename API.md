@@ -297,7 +297,7 @@ fetch(`${API}/orders`, {
 ### Request:
 
 ```js
-fetch(`${API}/items`, {
+fetch(`${API}/orders/items`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
