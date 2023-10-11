@@ -2,7 +2,7 @@ import express from "express";
 export const paymentRouter = express.Router();
 import stripe from "stripe";
 
-app.post("/payment", cors(), async (req, res) => {
+paymentRouter.post("/", cors(), async (req, res) => {
     let { amount, id } = req.body
     try {
         const payment = await stripe.paymentIntents.create({
