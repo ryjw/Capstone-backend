@@ -1,6 +1,7 @@
 import express from "express";
 export const paymentRouter = express.Router();
 import stripe from "stripe";
+paymentRouter.use(cors());
 
 paymentRouter.post("/", cors(), async (req, res) => {
     let { amount, id } = req.body
