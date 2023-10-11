@@ -50,12 +50,6 @@ app.use(async (req, res, next) => {
 app.post("/payment", async (req, res) => {
   let { amount, id } = req.body
   try {
-    if (!req.user) {
-      res.send({
-        success: false,
-        error: "please log in to create your order",
-      });
-    }
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: 'usd',
