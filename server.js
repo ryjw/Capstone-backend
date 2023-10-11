@@ -2,14 +2,14 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import stripe from "stripe";
+import bodyParser from "body-parser";
 import { PrismaClient } from "@prisma/client";
 import { userRouter } from "./routes/userRouter.js";
 import { orderRouter } from "./routes/orderRouter.js";
 import { menuRouter } from "./routes/menuRouter.js";
-import { paymentRouter } from "./routes/paymentRouter.js";
 
 dotenv.config();
-const bodyParser = require("body-parser");
 const app = express();
 const PORT = 3000;
 export const prisma = new PrismaClient();
@@ -44,10 +44,33 @@ app.use(async (req, res, next) => {
   }
 });
 
+app.post("/payment", cors(), async (req, res) => {
+  let { amount, id } = req.body
+  try {
+      const payment = await stripe.paymentIntents.create({
+          amount,
+          currency: "USD",
+          description: "Krusty Krab",
+          payment_method: id,
+          confirm: true
+      })
+      console.log("Payment", payment)
+      res.json({
+          message: "Payment successful",
+          success: true
+      })
+  } catch (error) {
+      console.log("Error", error)
+      res.json({
+          message: "Payment failed",
+          success: false
+      })
+  }
+})
+
 app.use("/users", userRouter);
 app.use("/orders", orderRouter);
 app.use("/menu", menuRouter);
-app.use("/payment", paymentRouter);
 
 app.get("/", (req, res) => {
   res.send({
