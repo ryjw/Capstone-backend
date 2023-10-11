@@ -1,6 +1,6 @@
 import express from "express";
 export const paymentRouter = express.Router();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+import stripe from "stripe";
 
 app.post("/payment", cors(), async (req, res) => {
     let { amount, id } = req.body
