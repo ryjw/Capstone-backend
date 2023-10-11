@@ -2,12 +2,15 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import stripe from "stripe";
 import bodyParser from "body-parser";
+import Stripe from "stripe";
 import { PrismaClient } from "@prisma/client";
 import { userRouter } from "./routes/userRouter.js";
 import { orderRouter } from "./routes/orderRouter.js";
 import { menuRouter } from "./routes/menuRouter.js";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 
 dotenv.config();
 const app = express();
@@ -44,27 +47,31 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.post("/payment", cors(), async (req, res) => {
+app.post("/payment", async (req, res) => {
   let { amount, id } = req.body
   try {
-      const payment = await stripe.paymentIntents.create({
-          amount,
-          currency: "USD",
-          description: "Krusty Krab",
-          payment_method: id,
-          confirm: true
-      })
-      console.log("Payment", payment)
-      res.json({
-          message: "Payment successful",
-          success: true
-      })
+    if (!req.user) {
+      res.send({
+        success: false,
+        error: "please log in to create your order",
+      });
+    }
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: 'usd',
+      payment_method_types: ["card"]
+    });
+    console.log("Payment", paymentIntent)
+    res.json({
+      message: "Payment successful",
+      success: true
+    })
   } catch (error) {
-      console.log("Error", error)
-      res.json({
-          message: "Payment failed",
-          success: false
-      })
+    console.log("Error", error)
+    res.json({
+      error: error.message,
+      success: false
+    })
   }
 })
 
