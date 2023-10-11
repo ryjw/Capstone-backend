@@ -6,11 +6,15 @@ import { PrismaClient } from "@prisma/client";
 import { userRouter } from "./routes/userRouter.js";
 import { orderRouter } from "./routes/orderRouter.js";
 import { menuRouter } from "./routes/menuRouter.js";
+import { paymentRouter } from "./routes/paymentRouter.js";
 
 dotenv.config();
+const bodyParser = require("body-parser");
 const app = express();
 const PORT = 3000;
 export const prisma = new PrismaClient();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
@@ -43,6 +47,7 @@ app.use(async (req, res, next) => {
 app.use("/users", userRouter);
 app.use("/orders", orderRouter);
 app.use("/menu", menuRouter);
+app.use("/payment", paymentRouter);
 
 app.get("/", (req, res) => {
   res.send({
