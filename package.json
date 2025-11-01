@@ -24,7 +24,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=17.0.0"
+    "node": "20.x"
   },
   "devDependencies": {
     "prisma": "^5.4.1"
